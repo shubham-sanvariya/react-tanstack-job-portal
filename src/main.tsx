@@ -1,3 +1,4 @@
+import { scan } from 'react-scan'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
@@ -12,6 +13,10 @@ declare module '@tanstack/react-router' {
     router: typeof router;
   }
 }
+
+scan({
+  enabled: true,
+})
 
 const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
