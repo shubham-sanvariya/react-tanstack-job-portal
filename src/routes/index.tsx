@@ -4,6 +4,7 @@ import Companies from '../components/home/companies'
 import JobCategory from '../components/home/jobCategory'
 import Working from '../components/home/working'
 import Testimonials from '../components/home/testimonials'
+import Subscribe from '../components/home/subscribe'
 
 
 
@@ -18,5 +19,6 @@ function RouteComponent() {
     <JobCategory />
     <Working />
     <Testimonials/>
+    <Subscribe/>
 </div>
 }
