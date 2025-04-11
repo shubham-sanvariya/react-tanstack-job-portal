@@ -3,6 +3,11 @@ export interface LoginType {
     password: string;
 }
 
+export const  DefaultLoginValue : LoginType = {
+    email: "",
+    password: ""
+}
+
 export interface RegisterUserType {
     name: string;
     email: string;
@@ -10,7 +15,9 @@ export interface RegisterUserType {
     accountType: "APPLICANT" | "EMPLOYER";
 }
 
-export const  DefaultLoginValue : LoginType = {
+export const DefaultRegisterUserValue : RegisterUserType = {
+    name: "",
     email: "",
-    password: ""
+    password: "",
+    accountType: "APPLICANT"
 }
