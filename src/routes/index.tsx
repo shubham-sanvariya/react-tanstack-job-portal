@@ -1,9 +1,16 @@
 import { createFileRoute } from '@tanstack/react-router'
+import DreamJob from '../components/home/dreamJob'
+import Companies from '../components/home/companies'
+import JobCategory from '../components/home/jobCategory'
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return <div>Hello "/"!</div>
+  return <div className={'min-h-[100vh] bg-mine-shaft-950 font-[poppins]'}>
+    <DreamJob />
+    <Companies />
+    <JobCategory />
+</div>
 }
