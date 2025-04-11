@@ -1,3 +1,5 @@
+import {InputComponents} from "../components/registerInputComponent/inputComponent.tsx";
+
 export interface LoginType {
     email : string;
     password: string;
@@ -24,9 +26,11 @@ export const DefaultRegisterUserValue : RegisterUserType = {
     accountType: "APPLICANT"
 }
 
-export const registerFormKeyAndTypes: Array<[keyof RegisterUserType, string, string, string]> = [
-    ["username", "string", "Username","TextInput"],
-    ["email", "string", "Email","TextInput"],
-    ["password", "string", "Picture", "PasswordInput"],
-    ["confirmPassword", "string", "Picture", "PasswordInput"],
+type InputComponentType  = keyof typeof InputComponents;
+
+export const registerFormKeyAndTypes: Array<[keyof RegisterUserType, string,string, InputComponentType]> = [
+    ["username", "Full Name", "Enter Your Full Name","TextInput"],
+    ["email", "Email", "Enter Your Email","TextInput"],
+    ["password", "Password", "Enter Your Password", "PasswordInput"],
+    ["confirmPassword", "Confirm Password", "Enter Your Confirm Password", "PasswordInput"],
 ]
