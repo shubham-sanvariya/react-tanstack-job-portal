@@ -9,15 +9,24 @@ export const  DefaultLoginValue : LoginType = {
 }
 
 export interface RegisterUserType {
-    name: string;
+    username: string;
     email: string;
     password: string;
+    confirmPassword: string;
     accountType: "APPLICANT" | "EMPLOYER";
 }
 
 export const DefaultRegisterUserValue : RegisterUserType = {
-    name: "",
+    username: "",
     email: "",
     password: "",
+    confirmPassword: "",
     accountType: "APPLICANT"
 }
+
+export const registerFormKeyAndTypes: Array<[keyof RegisterUserType, string, string, string]> = [
+    ["username", "string", "Username","TextInput"],
+    ["email", "string", "Email","TextInput"],
+    ["password", "string", "Picture", "PasswordInput"],
+    ["confirmPassword", "string", "Picture", "PasswordInput"],
+]
