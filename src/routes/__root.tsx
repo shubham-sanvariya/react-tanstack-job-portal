@@ -4,6 +4,8 @@ import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import '@mantine/core/styles.css';
 import { createTheme, MantineProvider } from "@mantine/core";
+import Header from "../components/header/header";
+import Footer from "../components/footer/footer";
 
 export const Route = createRootRoute({
     component: () => {
@@ -55,7 +57,9 @@ export const Route = createRootRoute({
                         <DreamJob />
                         <Companies />
                     </div> */}
-                    <Outlet />
+                    <Header/>
+                    <Outlet/>
+                    <Footer/>
                     <TanStackRouterDevtools />
                     <ReactQueryDevtools initialIsOpen={false} />
                 </QueryClientProvider>
