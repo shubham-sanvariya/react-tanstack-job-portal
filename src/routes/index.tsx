@@ -3,6 +3,7 @@ import DreamJob from '../components/home/dreamJob'
 import Companies from '../components/home/companies'
 import JobCategory from '../components/home/jobCategory'
 import Working from '../components/home/working'
+import Testimonials from '../components/home/testimonials'
 
 
 
@@ -16,5 +17,6 @@ function RouteComponent() {
     <Companies />
     <JobCategory />
     <Working />
+    <Testimonials/>
 </div>
 }
