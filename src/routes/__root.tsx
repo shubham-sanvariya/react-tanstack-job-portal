@@ -2,8 +2,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import DreamJob from "../components/home/dreamJob";
-import Companies from "../components/home/companies";
 import '@mantine/core/styles.css';
 import { createTheme, MantineProvider } from "@mantine/core";
 
@@ -53,10 +51,10 @@ export const Route = createRootRoute({
                         Home
                     </Link>{' '}
                 </div> */}
-                    <div className={'min-h-[100vh] bg-mine-shaft-950 font-[poppins]'}>
+                    {/* <div className={'min-h-[100vh] bg-mine-shaft-950 font-[poppins]'}>
                         <DreamJob />
                         <Companies />
-                    </div>
+                    </div> */}
                     <Outlet />
                     <TanStackRouterDevtools />
                     <ReactQueryDevtools initialIsOpen={false} />
