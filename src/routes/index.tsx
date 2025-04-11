@@ -4,11 +4,7 @@ import Companies from '../components/home/companies'
 import JobCategory from '../components/home/jobCategory'
 import Working from '../components/home/working'
 
-import '@mantine/tiptap/styles.css';
-import '@mantine/core/styles.css';
-import '@mantine/carousel/styles.css';
-import '@mantine/dates/styles.css'
-import '@mantine/notifications/styles.css';
+
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,

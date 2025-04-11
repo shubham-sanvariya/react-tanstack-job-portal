@@ -1,8 +1,12 @@
+import '@mantine/tiptap/styles.css';
+import '@mantine/core/styles.css';
+import '@mantine/carousel/styles.css';
+import '@mantine/dates/styles.css'
+import '@mantine/notifications/styles.css';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import '@mantine/core/styles.css';
 import { createTheme, MantineProvider } from "@mantine/core";
 import Header from "../components/header/header";
 import Footer from "../components/footer/footer";
