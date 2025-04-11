@@ -27,6 +27,7 @@
     "@tiptap/pm": "^2.11.7",
     "@tiptap/react": "^2.11.7",
     "@tiptap/starter-kit": "^2.11.7",
+    "axios": "^1.8.4",
     "babel-plugin-react-compiler": "^19.0.0-beta-e993439-20250328",
     "dayjs": "^1.11.13",
     "embla-carousel-react": "^7.1.0",
