@@ -34,7 +34,7 @@ const OtpBox = forwardRef<OtpBoxHandle,OtpBoxProps>(({ opened, closeFn,  email, 
     }, 1000)
 
     const sendOtpMutation  = useMutation({
-       onMutate: async (email : string) => sendOtp(email, "register"),
+       mutationFn: async (email : string) => sendOtp(email, "register"),
         onSuccess: () => {
             setOtpSent(true)
             interval.start()
@@ -50,9 +50,15 @@ const OtpBox = forwardRef<OtpBoxHandle,OtpBoxProps>(({ opened, closeFn,  email, 
     }
 
     useImperativeHandle(ref, () => ({
-        sendOtp: handleSendOtp
-    }))
-
+        sendOtp: () => {
+            console.log("OTP send function called - email:", email);
+            if (!email) {
+                console.error("No email provided to send OTP");
+                return;
+            }
+            sendOtpMutation.mutate(email);
+        }
+    }), [email, sendOtpMutation]);
 
     const verifyOtpMutation = useMutation({
         mutationFn: async (otp : string) => verifyOtp(email, otp),
