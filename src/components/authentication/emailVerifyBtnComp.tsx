@@ -1,29 +1,52 @@
-import {Button} from "@mantine/core";
+import { Button } from "@mantine/core";
+import { useRef } from "react";
+import OtpBox, { OtpBoxHandle } from "./otpBox.tsx";
+import { useDisclosure } from "@mantine/hooks";
 
 interface EmailVerifyBtnCompProps {
-    handleSendOtp: () => void,
-    errorsLength: number,
-    emailLength: number,
-    emailVerified: boolean
+    errorsLength: number;
+    emailLength: number;
+    emailVerified: boolean;
+    email: string; // Add email prop
+    setEmailVerified: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const EmailVerifyBtnComp = ( { emailVerified,handleSendOtp,errorsLength,emailLength } : EmailVerifyBtnCompProps ) => {
-    return (
-        <div>
-            <Button
-                disabled={errorsLength > 0 || emailLength === 0}
-                className={
-                    !emailVerified
-                        ? `!bg-blue-500 !text-white py-2 px-4 rounded hover:!bg-blue-600`
-                        : `!bg-green-500 text-white py-2 px-4 rounded hover:!bg-green-600`
-                }
-                onClick={handleSendOtp}
-                variant={'filled'}
-            >
-                {!emailVerified ? "Verify Email" : "Verified"}
-            </Button>
+const EmailVerifyBtnComp = ({ emailVerified, errorsLength, emailLength, email, setEmailVerified }: EmailVerifyBtnCompProps) => {
+    const otpBoxRef = useRef<OtpBoxHandle>(null);
+    const [opened, { open, close }] = useDisclosure(false);
 
-        </div>
+    const handleSendOtpClick = () => {
+        if (otpBoxRef.current) {
+            open();
+            otpBoxRef.current?.sendOtp();
+        }
+    };
+    return (
+        <>
+            <div>
+                <Button
+                    disabled={errorsLength > 0 || emailLength === 0}
+                    className={
+                        !emailVerified
+                            ? `!bg-blue-500 !text-white py-2 px-4 rounded hover:!bg-blue-600`
+                            : `!bg-green-500 !text-white py-2 px-4 rounded hover:!bg-green-600`
+                    }
+                    onClick={handleSendOtpClick}
+                    variant={'filled'}
+                >
+                    {!emailVerified ? "Verify Email" : "Verified"}
+                </Button>
+
+            </div>
+
+            <OtpBox
+                ref={otpBoxRef}
+                opened={opened}
+                closeFn={close}
+                email={email}
+                setEmailVerified={setEmailVerified}
+            />
+        </>
     )
 }
 export default EmailVerifyBtnComp
