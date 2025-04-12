@@ -12,13 +12,14 @@ interface OtpBoxProps {
     opened: boolean;
     closeFn: () => void;
     email : string;
+    setEmailVerified : React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export interface OtpBoxHandle {
     sendOtp: () => void;
 }
 
-const OtpBox = forwardRef<OtpBoxHandle,OtpBoxProps>(({ opened, closeFn,  email }, ref) => {
+const OtpBox = forwardRef<OtpBoxHandle,OtpBoxProps>(({ opened, closeFn,  email, setEmailVerified }, ref) => {
     const OTP_RESEND_INTERVAL = 60
     const [otpSent, setOtpSent] = useState(false)
     const [seconds, setSeconds] = useState(OTP_RESEND_INTERVAL)
@@ -56,6 +57,7 @@ const OtpBox = forwardRef<OtpBoxHandle,OtpBoxProps>(({ opened, closeFn,  email }
     const verifyOtpMutation = useMutation({
         mutationFn: async (otp : string) => verifyOtp(email, otp),
         onSuccess: () => {
+            setEmailVerified(true);
             successNotification("OTP verified", "Email Verified Successfully");
             closeFn();
         },
