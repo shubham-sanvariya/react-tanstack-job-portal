@@ -10,6 +10,7 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { createTheme, MantineProvider } from "@mantine/core";
 import Header from "../components/header/header";
 import Footer from "../components/footer/footer";
+import {Notifications} from "@mantine/notifications";
 
 export const Route = createRootRoute({
     component: () => {
@@ -52,15 +53,8 @@ export const Route = createRootRoute({
             <MantineProvider theme={theme} defaultColorScheme="dark">
 
                 <QueryClientProvider client={queryClient}>
-                    {/* <div className="p-2 flex gap-2">
-                    <Link to={"/"} className="[&.active]:font-bold">
-                        Home
-                    </Link>{' '}
-                </div> */}
-                    {/* <div className={'min-h-[100vh] bg-mine-shaft-950 font-[poppins]'}>
-                        <DreamJob />
-                        <Companies />
-                    </div> */}
+                    <Notifications position={"top-center"} zIndex={1000}/>
+
                     <Header/>
                     <Outlet/>
                     <Footer/>
