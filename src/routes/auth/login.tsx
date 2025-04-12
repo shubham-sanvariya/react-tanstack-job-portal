@@ -23,7 +23,7 @@ function RouteComponent() {
     onSuccess: (data) => {
       successNotification("Login Successfully", "Redirecting to Home Page")
       localStorage.setItem("user", JSON.stringify(data))
-      navigate({ to: "/" })
+      navigate({ to: "/" }).then()
     },
     onError: (err: unknown) => {
       handleError(err, "Login Failed");
@@ -86,7 +86,7 @@ function RouteComponent() {
 
       <div className={'mx-auto'}>don't have an Account ? &nbsp;
         <span onClick={() => {
-          navigate({ to: '/auth' })
+          navigate({ to: '/auth/signup' }).then()
         }} className={'text-bright-sun-400 hover:underline cursor-pointer'}>
           SignUp
         </span>
