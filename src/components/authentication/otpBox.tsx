@@ -41,6 +41,7 @@ const OtpBox = forwardRef<OtpBoxHandle,OtpBoxProps>(({ opened, closeFn,  email, 
             successNotification('OTP sent successfully', 'Enter OTP to verify email.')
         },
         onError: (err : unknown) => {
+           closeFn()
            handleError(err, "Failed To Send OTP")
         }
     });
