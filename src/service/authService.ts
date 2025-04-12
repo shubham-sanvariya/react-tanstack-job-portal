@@ -3,7 +3,7 @@ import { LoginType, RegisterUserType } from "../types/authType";
 
 const base_URL = "http://localhost:8080/auth"
 
-export const registerUser = async (user: RegisterUserType) => {
+export const registerUser = async (user: Omit<RegisterUserType, "TermsAndConditions" | "confirmPassword">) => {
     try {
         const response = await axios.post(`${base_URL}/register`, user);
         return response.data;
