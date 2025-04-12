@@ -16,6 +16,7 @@ export interface RegisterUserType {
     password: string;
     confirmPassword: string;
     accountType: "APPLICANT" | "EMPLOYER";
+    TermsAndConditions : boolean;
 }
 
 export const DefaultRegisterUserValue : RegisterUserType = {
@@ -23,12 +24,13 @@ export const DefaultRegisterUserValue : RegisterUserType = {
     email: "",
     password: "",
     confirmPassword: "",
-    accountType: "APPLICANT"
+    accountType: "APPLICANT",
+    TermsAndConditions: false
 }
 
 type InputComponentType  = keyof typeof InputComponents;
 
-export const registerFormKeyAndTypes: Array<[keyof RegisterUserType, string,string, InputComponentType]> = [
+export const registerFormKeyAndTypes: Array<[keyof Omit<RegisterUserType, "TermsAndConditions" | "accountType">, string,string, InputComponentType]> = [
     ["username", "Full Name", "Enter Your Full Name","TextInput"],
     ["email", "Email", "Enter Your Email","TextInput"],
     ["password", "Password", "Enter Your Password", "PasswordInput"],
