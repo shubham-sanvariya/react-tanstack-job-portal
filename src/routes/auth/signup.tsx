@@ -84,9 +84,7 @@ function RouteComponent() {
                       {
                           index === 1 && (
                               <EmailVerifyBtnComp
-                                  // handleSendOtp={handleSendOtpClick}
                                   errorsLength={field.state.meta.errors.length}
-                                  emailLength={val.length}
                                   emailVerified={emailVerified}
                                   email={form.getFieldValue("email")}
                                   setEmailVerified={setEmailVerified}
