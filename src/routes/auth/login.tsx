@@ -9,6 +9,7 @@ import { useMutation } from '@tanstack/react-query'
 import { loginUser } from '../../service/authService'
 import { handleError } from '../../service/errorService'
 import { successNotification } from '../../components/notification/notification'
+import ResetPassword from "../../components/authentication/resetPassword.tsx";
 
 export const Route = createFileRoute('/auth/login')({
   component: RouteComponent,
@@ -93,6 +94,6 @@ function RouteComponent() {
       </div>
       <div onClick={open} className={'text-bright-sun-400 hover:underline cursor-pointer text-center'}>Forgot Password ?</div>
     </form>
-    {/* <ResetPassword opened={opened} close={close} /> */}
+     <ResetPassword opened={opened} close={close} />
   </>
 }
