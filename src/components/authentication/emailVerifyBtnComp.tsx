@@ -1,17 +1,16 @@
-import { Button } from "@mantine/core";
-import { useRef } from "react";
-import OtpBox, { OtpBoxHandle } from "./otpBox.tsx";
-import { useDisclosure } from "@mantine/hooks";
+import {Button} from "@mantine/core";
+import {useRef} from "react";
+import OtpBox, {OtpBoxHandle} from "./otpBox.tsx";
+import {useDisclosure} from "@mantine/hooks";
 
 interface EmailVerifyBtnCompProps {
     errorsLength: number;
-    emailLength: number;
     emailVerified: boolean;
     email: string; // Add email prop
     setEmailVerified: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const EmailVerifyBtnComp = ({ emailVerified, errorsLength, emailLength, email, setEmailVerified }: EmailVerifyBtnCompProps) => {
+const EmailVerifyBtnComp = ({emailVerified, errorsLength, email, setEmailVerified}: EmailVerifyBtnCompProps) => {
     const otpBoxRef = useRef<OtpBoxHandle>(null);
     const [opened, { open, close }] = useDisclosure(false);
 
@@ -25,7 +24,7 @@ const EmailVerifyBtnComp = ({ emailVerified, errorsLength, emailLength, email, s
         <>
             <div>
                 <Button
-                    disabled={errorsLength > 0 || emailLength === 0}
+                    disabled={errorsLength > 0 || email.length === 0}
                     className={
                         !emailVerified
                             ? `!bg-blue-500 !text-white py-2 px-4 rounded hover:!bg-blue-600`
