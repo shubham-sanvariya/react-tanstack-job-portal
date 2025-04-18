@@ -3,11 +3,11 @@ import {IconAt, IconLock} from '@tabler/icons-react'
 import {useForm} from "@tanstack/react-form";
 import {loginFormValidation} from "../../validators/loginFormValidation.ts";
 import {DefaultLoginValue} from "../../types/authType.ts";
-import useSendOtp from "../../hooks/useSendOtp.tsx";
 import {useMutation} from "@tanstack/react-query";
 import {changePassword} from "../../service/userService.ts";
 import {successNotification} from "../notification/notification.tsx";
 import {handleError} from "../../service/errorService.ts";
+import UseAuthOtp from "../../hooks/useAuthOtp.tsx";
 
 interface ResetPasswordProps {
     opened: boolean;
@@ -23,7 +23,7 @@ const ResetPassword = ({opened, close}: ResetPasswordProps) => {
         }
     })
 
-    const {sendOtpMutation, verifyOtpMutation, interval, seconds, resetInterval} = useSendOtp(close);
+    const {sendOtpMutation, verifyOtpMutation, interval, seconds, resetInterval} = UseAuthOtp(close);
 
     const {mutate: sendOtpMutate, isPending: isSendOtpPending, isSuccess: isSendOtpSuccess} = sendOtpMutation;
 
