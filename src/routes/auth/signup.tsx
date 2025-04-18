@@ -1,5 +1,5 @@
-import { LoadingOverlay, Button, Checkbox, Anchor } from '@mantine/core'
-import { useForm } from '@tanstack/react-form'
+import {LoadingOverlay, Button, Checkbox, Anchor} from '@mantine/core'
+import {useForm} from '@tanstack/react-form'
 import {createFileRoute, useNavigate} from '@tanstack/react-router'
 import {DefaultRegisterUserValue, registerFormKeyAndTypes} from '../../types/authType'
 import {signupFormValidation} from "../../validators/signupFormValidation.ts";
@@ -11,137 +11,140 @@ import {InputComponents} from "../../components/registerInputComponent/inputComp
 import EmailVerifyBtnComp from "../../components/authentication/emailVerifyBtnComp.tsx";
 import ApplicantRadioBtn from "../../components/authentication/applicantRadioBtn.tsx";
 import UseAuthOtp from "../../hooks/useAuthOtp.tsx";
+import {useCallback} from "react";
 
 export const Route = createFileRoute('/auth/signup')({
-  component: RouteComponent,
+    component: RouteComponent,
 })
 
 function RouteComponent() {
-  function close(){}
+    const navigate = useNavigate();
 
-  const { verifyOtpMutation } = UseAuthOtp(close);
+    const form = useForm({
+        defaultValues: DefaultRegisterUserValue,
+        validators: {
+            onChange: signupFormValidation,
+            onSubmit: signupFormValidation,
+        }
+    });
 
-  const {isSuccess: isVerifyOtpSuccess} = verifyOtpMutation;
-  const navigate = useNavigate();
+    const registerMutation = useMutation({
+        mutationFn: async () => registerUser(form.state.values),
+        onSuccess: () => {
+            successNotification("Registered Successfully", "Redirecting to Login Page");
+            navigate({to: "/"}).then()
+        },
+        onError: (err: unknown) => {
+            handleError(err, "Registration Failed");
+        }
+    })
 
-  const form = useForm({
-    defaultValues: DefaultRegisterUserValue,
-    validators: {
-      onChange: signupFormValidation,
-      onSubmit: signupFormValidation,
+    const handleFormSubmit = () => {
+        console.log(form.state.values);
+        registerMutation.mutate();
     }
-  })
 
-  const registerMutation = useMutation({
-    mutationFn: async () => registerUser(form.state.values),
-    onSuccess: () => {
-      successNotification("Registered Successfully", "Redirecting to Login Page");
-      navigate({to: "/"}).then()
-    },
-    onError: (err: unknown) => {
-      handleError(err, "Registration Failed");
-    }
-  })
+    const {sendOtpMutation, verifyOtpMutation} = UseAuthOtp();
+    const {mutate: sendOtpMutate} = sendOtpMutation;
+    const {isSuccess: isVerifyOtpSuccess} = verifyOtpMutation;
 
-  const handleFormSubmit = () => {
-    console.log(form.state.values);
-    registerMutation.mutate();
-  }
+    const handleSendOtpClick = useCallback(() => {
+        sendOtpMutate(form.getFieldValue("email"));
+    }, [form, sendOtpMutate]);
 
-  return <>
-    <LoadingOverlay
-        className="translate-x-1/2"
-        visible={registerMutation.isPending}
-        zIndex={1000}
-        overlayProps={{radius: 'sm', blur: 2}}
-        loaderProps={{color: 'pink', type: 'bars'}}
-    />
-    <form onSubmit={(e) => {
-      e.preventDefault();
-      handleFormSubmit();
-    }}
-          className={'flex flex-col justify-center gap-3 w-1/2 px-20'}>
-      <div className={'text-2xl font-semibold'}>
-        Create Account
-      </div>
-      {registerFormKeyAndTypes.map((data, index) => (
-          <form.Field name={data[0]} key={index}>
-            {
-              (field) => {
-                const val = field.state.value;
-                const error = field.state.meta.errors[0]?.message;
-                const [key, label, placeHolder, component] = data;
-                const InputComponent = InputComponents[component];
-                return (
-                    <>
-                      <InputComponent
-                          name={key}
-                          label={label}
-                          placeholder={placeHolder}
-                          value={val}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                          error={error}
-                      />
+    return <>
+        <LoadingOverlay
+            className="translate-x-1/2"
+            visible={registerMutation.isPending}
+            zIndex={1000}
+            overlayProps={{radius: 'sm', blur: 2}}
+            loaderProps={{color: 'pink', type: 'bars'}}
+        />
+        <form onSubmit={(e) => {
+            e.preventDefault();
+            handleFormSubmit();
+        }}
+              className={'flex flex-col justify-center gap-3 w-1/2 px-20'}>
+            <div className={'text-2xl font-semibold'}>
+                Create Account
+            </div>
+            {registerFormKeyAndTypes.map((data, index) => (
+                <form.Field name={data[0]} key={index}>
+                    {
+                        (field) => {
+                            const val = field.state.value;
+                            const error = field.state.meta.errors[0]?.message;
+                            const [key, label, placeHolder, component] = data;
+                            const InputComponent = InputComponents[component];
+                            return (
+                                <>
+                                    <InputComponent
+                                        name={key}
+                                        label={label}
+                                        placeholder={placeHolder}
+                                        value={val}
+                                        onChange={(e) => field.handleChange(e.target.value)}
+                                        error={error}
+                                    />
+                                    <div className={index === 1 ? 'block' : "hidden"}>
+                                        <EmailVerifyBtnComp
+                                            errorsLength={field.state.meta.errors.length || 0}
+                                            emailVerified={isVerifyOtpSuccess}
+                                            email={form.getFieldValue("email") || ''}
+                                            handleSendOtpClick={handleSendOtpClick}
+                                        />
+                                    </div>
 
-                      {
-                          index === 1 && (
-                              <EmailVerifyBtnComp
-                                  errorsLength={field.state.meta.errors.length}
-                                  emailVerified={isVerifyOtpSuccess}
-                                  email={form.getFieldValue("email")}
-                              />
-                          )
-                      }
-                    </>
+                                </>
 
-                )
-              }
-            }
-          </form.Field>
-      ))}
+                            )
+                        }
+                    }
+                </form.Field>
+            ))}
 
-      <form.Field name={'accountType'}>
-        {(field) => (
-            <ApplicantRadioBtn value={field.state.value} handleChange={field.handleChange}/>
-        )}
-      </form.Field>
-      <form.Field name={"TermsAndConditions"}>
-        {(field) => (
-            <Checkbox
-                checked={field.state.value}
-                onChange={(e) => field.handleChange(e.currentTarget.checked)}
-                autoContrast
-                label={<>
-                  I accept{' '}<Anchor>
-                  terms & conditions
-                </Anchor>
-                </>}
-            />
-        )}
-      </form.Field>
+            <form.Field name={'accountType'}>
+                {(field) => (
+                    <ApplicantRadioBtn value={field.state.value} handleChange={field.handleChange}/>
+                )}
+            </form.Field>
+            <form.Field name={"TermsAndConditions"}>
+                {(field) => (
+                    <Checkbox
+                        checked={field.state.value}
+                        onChange={(e) => field.handleChange(e.currentTarget.checked)}
+                        autoContrast
+                        label={<>
+                            I accept{' '}<Anchor>
+                            terms & conditions
+                        </Anchor>
+                        </>}
+                    />
+                )}
+            </form.Field>
 
-      <form.Subscribe
-          selector={(state) => ({
-            isValid: state.isFormValid,
-            values: state.values
-          })}
-          children={({ isValid }) => (
-              <Button type={"submit"} disabled={!isVerifyOtpSuccess || !isValid}
-                      className={!isVerifyOtpSuccess || form.state.errors.length > 0 ? "!bg-red-500 !text-white" : ``}
-                      autoContrast variant={'filled'}>Sign Up</Button>
-          )}
-      >
+            <form.Subscribe
+                selector={(state) => ({
+                    isValid: state.isFormValid,
+                    values: state.values
+                })}
+                children={({isValid}) => (
+                    <Button type={"submit"} disabled={!isVerifyOtpSuccess || !isValid}
+                            className={!isVerifyOtpSuccess || form.state.errors.length > 0 ? "!bg-red-500 !text-white" : ``}
+                            autoContrast variant={'filled'}>Sign Up</Button>
+                )}
+            >
 
 
-      </form.Subscribe>
-      <div className={'mx-auto'}>Already have an Account ? &nbsp;
-        <span onClick={() => {
-          navigate({to: "/auth/login"}).then()
-          form.reset();
-        }} className={'text-bright-sun-400 hover:underline cursor-pointer'}>
+            </form.Subscribe>
+            <div className={'mx-auto'}>Already have an Account ? &nbsp;
+                <span onClick={() => {
+                    navigate({to: "/auth/login"}).then()
+                    form.reset();
+                }} className={'text-bright-sun-400 hover:underline cursor-pointer'}>
                     Login
                 </span>
-      </div>
-    </form>
-  </>
+            </div>
+        </form>
+    </>
 }
