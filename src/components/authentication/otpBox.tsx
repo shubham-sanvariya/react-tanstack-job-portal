@@ -1,7 +1,6 @@
 
 import { Button, Modal, PinInput } from "@mantine/core"
 
-import {forwardRef, useImperativeHandle} from "react";
 import UseAuthOtp from "../../hooks/useAuthOtp.tsx";
 
 interface OtpBoxProps {
@@ -10,13 +9,9 @@ interface OtpBoxProps {
     email : string;
 }
 
-export interface OtpBoxHandle {
-    sendOtp: () => void;
-}
+const OtpBox = ({ opened, closeFn,  email } : OtpBoxProps) => {
 
-const OtpBox = forwardRef<OtpBoxHandle,OtpBoxProps>(({ opened, closeFn,  email }, ref) => {
-
-    const { sendOtpMutation, verifyOtpMutation, interval, seconds } = UseAuthOtp(closeFn);
+    const { sendOtpMutation, verifyOtpMutation, isRunning, seconds } = UseAuthOtp(closeFn);
 
     const {mutate: sendOtpMutate, isSuccess: isSendOtpSuccess} = sendOtpMutation;
 
@@ -30,17 +25,6 @@ const OtpBox = forwardRef<OtpBoxHandle,OtpBoxProps>(({ opened, closeFn,  email }
         verifyOtpMutate({otp,email});
     };
 
-    useImperativeHandle(ref, () => ({
-        sendOtp: () => {
-            console.log("OTP send function called - email:", email);
-            if (!email) {
-                console.error("No email provided to send OTP");
-                return;
-            }
-            sendOtpMutation.mutate(email);
-        }
-    }), [email, sendOtpMutation]);
-
     return (
         <Modal opened={opened} onClose={closeFn} title={"Verify Email"}>
             <div className={'flex flex-col gap-6'}>
@@ -50,19 +34,19 @@ const OtpBox = forwardRef<OtpBoxHandle,OtpBoxProps>(({ opened, closeFn,  email }
                 {isSendOtpSuccess && <div className={'flex gap-2'}>
                     <Button
                         loading={sendOtpMutation.isPending}
-                        disabled={interval.active}
+                        disabled={isRunning}
                         fullWidth
                         color={'bright-sun.4'}
                         onClick={handleSendOtp}
                         autoContrast
                         variant={"light"}>
-                        {interval.active ? seconds : 'Resend OTP'}
+                        {isRunning ? seconds : 'Resend OTP'}
                     </Button>
                 </div>}
 
             </div>
         </Modal>
     )
-});
+}
 
 export default OtpBox
