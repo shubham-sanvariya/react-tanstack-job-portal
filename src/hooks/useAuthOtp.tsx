@@ -5,7 +5,7 @@ import {handleError} from "../service/errorService.ts";
 import {useInterval} from "@mantine/hooks";
 import {useState} from "react";
 
-const UseSendOtp = ( close : () => void ) => {
+const UseAuthOtp = (close : () => void ) => {
     const OTP_RESEND_INTERVAL = 60
     const [seconds, setSeconds] = useState(OTP_RESEND_INTERVAL);
 
@@ -48,4 +48,4 @@ const UseSendOtp = ( close : () => void ) => {
 
     return { sendOtpMutation, verifyOtpMutation, interval, seconds, resetInterval }
 }
-export default UseSendOtp
+export default UseAuthOtp
