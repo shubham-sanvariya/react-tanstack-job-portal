@@ -7,10 +7,9 @@ interface EmailVerifyBtnCompProps {
     errorsLength: number;
     emailVerified: boolean;
     email: string; // Add email prop
-    setEmailVerified: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const EmailVerifyBtnComp = ({emailVerified, errorsLength, email, setEmailVerified}: EmailVerifyBtnCompProps) => {
+const EmailVerifyBtnComp = ({emailVerified, errorsLength, email}: EmailVerifyBtnCompProps) => {
     const otpBoxRef = useRef<OtpBoxHandle>(null);
     const [opened, { open, close }] = useDisclosure(false);
 
@@ -43,7 +42,6 @@ const EmailVerifyBtnComp = ({emailVerified, errorsLength, email, setEmailVerifie
                 opened={opened}
                 closeFn={close}
                 email={email}
-                setEmailVerified={setEmailVerified}
             />
         </>
     )
