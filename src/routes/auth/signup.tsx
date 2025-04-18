@@ -3,7 +3,6 @@ import { useForm } from '@tanstack/react-form'
 import {createFileRoute, useNavigate} from '@tanstack/react-router'
 import {DefaultRegisterUserValue, registerFormKeyAndTypes} from '../../types/authType'
 import {signupFormValidation} from "../../validators/signupFormValidation.ts";
-import {useState} from "react";
 import {useMutation} from "@tanstack/react-query";
 import {registerUser} from "../../service/authService.ts";
 import {successNotification} from "../../components/notification/notification.tsx";
@@ -11,20 +10,23 @@ import {handleError} from "../../service/errorService.ts";
 import {InputComponents} from "../../components/registerInputComponent/inputComponent.tsx";
 import EmailVerifyBtnComp from "../../components/authentication/emailVerifyBtnComp.tsx";
 import ApplicantRadioBtn from "../../components/authentication/applicantRadioBtn.tsx";
+import UseAuthOtp from "../../hooks/useAuthOtp.tsx";
 
 export const Route = createFileRoute('/auth/signup')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  function close(){}
 
-  const [emailVerified, setEmailVerified] = useState(false);
+  const { verifyOtpMutation } = UseAuthOtp(close);
+
+  const {isSuccess: isVerifyOtpSuccess} = verifyOtpMutation;
   const navigate = useNavigate();
 
   const form = useForm({
     defaultValues: DefaultRegisterUserValue,
     validators: {
-      // onMount: signupFormValidation,
       onChange: signupFormValidation,
       onSubmit: signupFormValidation,
     }
@@ -85,9 +87,8 @@ function RouteComponent() {
                           index === 1 && (
                               <EmailVerifyBtnComp
                                   errorsLength={field.state.meta.errors.length}
-                                  emailVerified={emailVerified}
+                                  emailVerified={isVerifyOtpSuccess}
                                   email={form.getFieldValue("email")}
-                                  setEmailVerified={setEmailVerified}
                               />
                           )
                       }
@@ -125,8 +126,8 @@ function RouteComponent() {
             values: state.values
           })}
           children={({ isValid }) => (
-              <Button type={"submit"} disabled={!emailVerified || !isValid}
-                      className={!emailVerified || form.state.errors.length > 0 ? "!bg-red-500 !text-white" : ``}
+              <Button type={"submit"} disabled={!isVerifyOtpSuccess || !isValid}
+                      className={!isVerifyOtpSuccess || form.state.errors.length > 0 ? "!bg-red-500 !text-white" : ``}
                       autoContrast variant={'filled'}>Sign Up</Button>
           )}
       >
