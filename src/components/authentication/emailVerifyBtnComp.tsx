@@ -1,24 +1,22 @@
 import {Button} from "@mantine/core";
-import {useRef} from "react";
-import OtpBox, {OtpBoxHandle} from "./otpBox.tsx";
+import OtpBox from "./otpBox.tsx";
 import {useDisclosure} from "@mantine/hooks";
 
 interface EmailVerifyBtnCompProps {
     errorsLength: number;
     emailVerified: boolean;
     email: string; // Add email prop
+    handleSendOtpClick: () => void
 }
 
-const EmailVerifyBtnComp = ({emailVerified, errorsLength, email}: EmailVerifyBtnCompProps) => {
-    const otpBoxRef = useRef<OtpBoxHandle>(null);
-    const [opened, { open, close }] = useDisclosure(false);
+const EmailVerifyBtnComp = ({emailVerified, errorsLength, email,  handleSendOtpClick}: EmailVerifyBtnCompProps) => {
+    const [opened, {open, close}] = useDisclosure(false);
 
-    const handleSendOtpClick = () => {
-        if (otpBoxRef.current) {
-            open();
-            otpBoxRef.current?.sendOtp();
-        }
-    };
+    const sendOtp = () => {
+        open();
+        handleSendOtpClick();
+    }
+
     return (
         <>
             <div>
@@ -29,7 +27,7 @@ const EmailVerifyBtnComp = ({emailVerified, errorsLength, email}: EmailVerifyBtn
                             ? `!bg-blue-500 !text-white py-2 px-4 rounded hover:!bg-blue-600`
                             : `!bg-green-500 !text-white py-2 px-4 rounded hover:!bg-green-600`
                     }
-                    onClick={handleSendOtpClick}
+                    onClick={sendOtp}
                     variant={'filled'}
                 >
                     {!emailVerified ? "Verify Email" : "Verified"}
@@ -38,7 +36,6 @@ const EmailVerifyBtnComp = ({emailVerified, errorsLength, email}: EmailVerifyBtn
             </div>
 
             <OtpBox
-                ref={otpBoxRef}
                 opened={opened}
                 closeFn={close}
                 email={email}
