@@ -2,32 +2,35 @@ import {useMutation} from "@tanstack/react-query";
 import {sendOtp, verifyOtp} from "../service/authService.ts";
 import {successNotification} from "../components/notification/notification.tsx";
 import {handleError} from "../service/errorService.ts";
-import {useInterval} from "@mantine/hooks";
-import {useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 
-const UseAuthOtp = (close : () => void ) => {
+const UseAuthOtp = (close? : () => void ) => {
     const OTP_RESEND_INTERVAL = 60
     const [seconds, setSeconds] = useState(OTP_RESEND_INTERVAL);
+    const [isRunning, setIsRunning] = useState(false); // Start paused by default
 
-    const interval = useInterval(() => {
-        if (seconds === 0) {
-            setSeconds(OTP_RESEND_INTERVAL)
-            interval.stop()
-        } else {
-            setSeconds((s) => s - 1)
-        }
-    }, 1000)
+    // Stable interval implementation
+    useEffect(() => {
+        if (!isRunning) return;
 
-    const resetInterval = () => {
-        interval.stop();
+        const timer = setInterval(() => {
+            setSeconds(prev => (prev <= 1 ? OTP_RESEND_INTERVAL : prev - 1));
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [isRunning, OTP_RESEND_INTERVAL]);
+
+    const resetInterval = useCallback(() => {
+        setIsRunning(true);
         setSeconds(OTP_RESEND_INTERVAL);
-    }
+    }, [OTP_RESEND_INTERVAL]);
+
 
     const verifyOtpMutation = useMutation({
         mutationFn: async (props : {otp: string, email: string}) => verifyOtp(props.email, props.otp),
         onSuccess: () => {
             successNotification("OTP verified", "Email Verified Successfully");
-            close();
+           if (close) close();
         },
         onError: (err : unknown) => {
             handleError(err, "OTP verification failed")
@@ -37,15 +40,15 @@ const UseAuthOtp = (close : () => void ) => {
     const sendOtpMutation  = useMutation({
         mutationFn: async (email : string) => sendOtp(email,"register"),
         onSuccess: () => {
-            interval.start()
+            setIsRunning(true);
             successNotification('OTP sent successfully', 'Enter OTP to verify email.')
         },
         onError: (err : unknown) => {
-            close();
+            if (close) close();
             handleError(err, "Failed To Send OTP")
         }
     })
 
-    return { sendOtpMutation, verifyOtpMutation, interval, seconds, resetInterval }
+    return { sendOtpMutation, verifyOtpMutation, isRunning, seconds, resetInterval }
 }
 export default UseAuthOtp
