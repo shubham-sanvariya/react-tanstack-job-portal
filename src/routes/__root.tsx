@@ -8,14 +8,17 @@ import {createRootRouteWithContext, redirect} from "@tanstack/react-router";
 import {getUser} from "../service/userService.ts";
 import {UserType} from "../hooks/useAuth.tsx";
 import RootComp from "../components/root/rootComp.tsx";
+import {QueryClient} from "@tanstack/react-query";
+import queryClient from "../service/queryClient.ts";
 
 export interface RouterContext {
-    user : UserType | null
+    user : UserType | null,
+    queryClient : QueryClient
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
     beforeLoad: ({location}) => {
-        const user = getUser();
+        const user : UserType = getUser();
         console.log(user);
         const publicRoutes = ['/auth/login', '/auth/signup'];
 
@@ -27,7 +30,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
             throw redirect({ to: "/"})
         }
 
-        return { user };
+        return { user, queryClient };
     },
     component: RootComp
 })
