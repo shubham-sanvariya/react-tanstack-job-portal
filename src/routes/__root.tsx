@@ -18,7 +18,7 @@ export interface RouterContext {
 
 export const Route = createRootRouteWithContext<RouterContext>()({
     beforeLoad: ({location}) => {
-        const user : UserType = getUser();
+        const user = getUser();
         console.log(user);
         const publicRoutes = ['/auth/login', '/auth/signup'];
 
