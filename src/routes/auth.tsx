@@ -1,6 +1,4 @@
-import {Button} from '@mantine/core';
-import {IconArrowLeft} from '@tabler/icons-react';
-import {createFileRoute, Outlet, useLocation, useNavigate} from '@tanstack/react-router'
+import {createFileRoute, Outlet, useLocation} from '@tanstack/react-router'
 import fishingRod from '../../src/assets/Fishing-Rod.svg'
 
 export const Route = createFileRoute('/auth')({
@@ -8,19 +6,9 @@ export const Route = createFileRoute('/auth')({
 })
 
 function RouteComponent() {
-    const navigate = useNavigate();
     const location = useLocation();
 
     return <div className="min-h-[90vh] bg-mine-shaft-950 font-[poppins] overflow-hidden">
-        <Button
-            onClick={() => navigate({to: '/'})}
-            className="!absolute left-5 z-10"
-            leftSection={<IconArrowLeft size={20}/>}
-            color={'bright-sun.4'}
-            variant={"light"}
-        >
-            Home
-        </Button>
 
         <div
             className={`flex [&>*]:flex-shrink-0 w-[100vw] h-[100vh] transition-all ease-in-out duration-1000 ${location.pathname === '/auth/signup' ? '-translate-x-1/2' : 'translate-x-0'
