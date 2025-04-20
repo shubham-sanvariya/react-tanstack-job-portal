@@ -2,6 +2,10 @@ import {api} from "../apiConfig/axiosConfig.ts";
 
 const base_URL = "/users"
 
+export const getUser = () => {
+    const user = localStorage.getItem("user");
+    return user ? JSON.parse(user) : null;
+}
 
 export  const changePassword = async ( email : string, password : string) => {
     try {
