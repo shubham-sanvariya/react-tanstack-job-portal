@@ -1,10 +1,15 @@
 import {api} from "../apiConfig/axiosConfig.ts";
+import {UserType} from "../hooks/useAuth.tsx";
 
 const base_URL = "/users"
 
 export const getUser = () => {
     const user = localStorage.getItem("user");
-    return user ? JSON.parse(user) : null;
+    if (user){
+        const res : UserType = JSON.parse(user);
+        return res;
+    }
+    return null;
 }
 
 export  const changePassword = async ( email : string, password : string) => {
