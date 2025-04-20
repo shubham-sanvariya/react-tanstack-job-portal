@@ -23,6 +23,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
         if (!user && !isPublic) {
             throw redirect({to: "/auth/login"})
+        }else if (user !== null && isPublic){
+            throw redirect({ to: "/"})
         }
 
         return { user };
