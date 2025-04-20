@@ -5,10 +5,19 @@ import JobCategory from '../components/home/jobCategory'
 import Working from '../components/home/working'
 import Testimonials from '../components/home/testimonials'
 import Subscribe from '../components/home/subscribe'
+import {getProfileById} from "../service/profileService.ts";
 
 
 
 export const Route = createFileRoute('/')({
+  loader: async ({ context }) => {
+    const user =  context.user;
+    await context.queryClient.prefetchQuery({
+      queryKey: ["userProfile", user?.profileId],
+      queryFn: () => getProfileById(Number(user?.profileId)),
+      staleTime: Infinity
+    })
+  },
   component: RouteComponent,
 })
 
