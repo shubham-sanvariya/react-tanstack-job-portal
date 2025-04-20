@@ -3,18 +3,30 @@ import '@mantine/core/styles.css';
 import '@mantine/carousel/styles.css';
 import '@mantine/dates/styles.css'
 import '@mantine/notifications/styles.css';
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import {createRootRoute, Outlet, redirect} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { createTheme, MantineProvider } from "@mantine/core";
 import Header from "../components/header/header";
 import Footer from "../components/footer/footer";
 import {Notifications} from "@mantine/notifications";
+import queryClient from "../service/queryClient.ts";
+import {getUser} from "../service/userService.ts";
 
 export const Route = createRootRoute({
+    beforeLoad: ( { location } ) => {
+        const user = getUser();
+        const publicRoutes = ['/auth/login', '/auth/signup'];
+
+        const isPublic = publicRoutes.includes(location.pathname);
+
+        if (!user && !isPublic){
+            throw redirect({ to: "/auth/login" })
+        }
+    },
     component: () => {
-        const queryClient = new QueryClient();
+
         const theme = createTheme({
             focusRing: "never",
             fontFamily: 'poppins, san-serif',
