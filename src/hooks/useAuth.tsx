@@ -3,7 +3,7 @@ import queryClient from "../service/queryClient.ts";
 import {createContext, useContext} from "react";
 import {getUser} from "../service/userService.ts";
 
-interface UserType {
+export interface UserType {
     id: number,
     name: string,
     accountType: string,
