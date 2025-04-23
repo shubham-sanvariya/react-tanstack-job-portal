@@ -1,5 +1,5 @@
 import {Combobox, createTheme, MantineProvider} from "@mantine/core";
-import {Outlet, useRouteContext} from "@tanstack/react-router";
+import {Outlet, rootRouteId, useRouteContext} from "@tanstack/react-router";
 import {Notifications} from "@mantine/notifications";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import {QueryClientProvider} from "@tanstack/react-query";
@@ -10,9 +10,9 @@ import Header from "../header/header.tsx";
 import Footer from "../footer/footer.tsx";
 
 const RootComp = React.memo(() => {
-    const {user} = useRouteContext({
-            from: "/"
-    });
+    const { user } = useRouteContext({
+        from: rootRouteId
+    })
 
     const theme = useMemo(() => createTheme({
         focusRing: "never",
