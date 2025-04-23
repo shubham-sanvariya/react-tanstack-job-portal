@@ -8,6 +8,8 @@ const useUser = () => {
         staleTime: Infinity
     })
 
-    return { userState }
+    const { data : user, isPending, error } = userState;
+
+    return { user, isPending, error };
 }
 export default useUser
