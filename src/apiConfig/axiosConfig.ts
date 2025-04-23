@@ -31,7 +31,7 @@ api.interceptors.response.use(
                 localStorage.removeItem("user");
 
                 setTimeout(() => {
-                    window.location.href = "/login";
+                    window.location.href = "/auth/login";
                 }, 3000)
                 console.log(refreshError);
 
