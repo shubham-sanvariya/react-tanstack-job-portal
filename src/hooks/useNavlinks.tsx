@@ -1,8 +1,8 @@
 import useUser from "./useUser.tsx";
 
 const useNavLinks = () => {
-    const { userState } = useUser();
-    const accountType = userState.data?.accountType;
+    const { user } = useUser();
+    const accountType = user?.accountType;
 
     const links = accountType === "APPLICANT" ? [
         {name: "Find Jobs", url: "find-jobs"},
