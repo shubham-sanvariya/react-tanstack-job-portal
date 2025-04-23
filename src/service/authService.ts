@@ -1,5 +1,6 @@
 import { LoginType, RegisterUserType } from "../types/authType";
 import {api} from "../apiConfig/axiosConfig.ts";
+import queryClient from "./queryClient.ts";
 
 const base_URL = "http://localhost:8080/auth"
 
@@ -44,3 +45,7 @@ export const verifyOtp = async (email: string, otp: string) => {
     }
 }
 
+export const handleLogout = () => {
+    localStorage.removeItem("user");
+    queryClient.clear();
+}
