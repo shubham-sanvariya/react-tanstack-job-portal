@@ -6,6 +6,7 @@ import Working from '../components/home/working'
 import Testimonials from '../components/home/testimonials'
 import Subscribe from '../components/home/subscribe'
 import {getProfileById} from "../service/profileService.ts";
+import {getAllNotificationByUserId} from "../service/notificationService.ts";
 
 
 
@@ -15,6 +16,12 @@ export const Route = createFileRoute('/')({
     await context.queryClient.prefetchQuery({
       queryKey: ["userProfile", user?.profileId],
       queryFn: () => getProfileById(Number(user?.profileId)),
+      staleTime: Infinity
+    })
+
+    await context.queryClient.prefetchQuery({
+      queryKey: ["notifications", user?.id],
+      queryFn: () => getAllNotificationByUserId(Number(user?.id)),
       staleTime: Infinity
     })
   },
