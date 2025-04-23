@@ -6,10 +6,10 @@ import '@mantine/notifications/styles.css';
 
 import {createRootRouteWithContext, redirect} from "@tanstack/react-router";
 import {getUser} from "../service/userService.ts";
-import {UserType} from "../hooks/useAuth.tsx";
 import RootComp from "../components/root/rootComp.tsx";
 import {QueryClient} from "@tanstack/react-query";
 import queryClient from "../service/queryClient.ts";
+import {UserType} from "../types/profileType.ts";
 
 export interface RouterContext {
     user : UserType | null,
@@ -17,8 +17,12 @@ export interface RouterContext {
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-    beforeLoad: ({location}) => {
-        const user = getUser();
+    beforeLoad : async ({location}) => {
+        const user = await queryClient.fetchQuery({
+            queryKey: ["user"],
+            queryFn: getUser,
+            staleTime: Infinity
+        });
         console.log(user);
         const publicRoutes = ['/auth/login', '/auth/signup'];
 
