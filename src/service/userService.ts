@@ -1,5 +1,5 @@
 import {api} from "../apiConfig/axiosConfig.ts";
-import {UserType} from "../hooks/useAuth.tsx";
+import {UserType} from "../types/profileType.ts";
 
 const base_URL = "/users"
 
