@@ -12,3 +12,13 @@ export const getAllNotificationByUserId = async (userId: number) => {
         throw err;
     }
 }
+
+export const readNotificationById = async (id: number) => {
+    try {
+        const res = await api.patch(`${BASE_URL}/read/${id}`);
+        return res.data;
+    } catch (err: unknown) {
+        console.error("Notification Service Read Failed");
+        throw err;
+    }
+}
