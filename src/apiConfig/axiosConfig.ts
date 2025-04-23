@@ -1,5 +1,6 @@
 import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from "axios";
 import {errorNotification} from "../components/notification/notification.tsx";
+import {handleLogout} from "../service/authService.ts";
 
 export const api = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
@@ -28,7 +29,7 @@ api.interceptors.response.use(
                 return api(originalRequest);
             } catch (refreshError) {
                 errorNotification("Session Expired", "Please Login again.")
-                localStorage.removeItem("user");
+                handleLogout();
 
                 setTimeout(() => {
                     window.location.href = "/auth/login";
