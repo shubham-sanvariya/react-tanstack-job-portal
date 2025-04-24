@@ -12,29 +12,25 @@ import queryClient from "../service/queryClient.ts";
 import {UserType} from "../types/profileType.ts";
 
 export interface RouterContext {
-    user : UserType | null,
-    queryClient : QueryClient
+    user: UserType | null,
+    queryClient: QueryClient
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-    beforeLoad : async ({location}) => {
-        const user = await queryClient.fetchQuery({
-            queryKey: ["user"],
-            queryFn: getUser,
-            staleTime: Infinity
-        });
-        console.log(user);
+    beforeLoad: async ({location}) => {
+        const user = getUser();
+
         const publicRoutes = ['/auth/login', '/auth/signup'];
 
         const isPublic = publicRoutes.includes(location.pathname);
 
         if (!user && !isPublic) {
             throw redirect({to: "/auth/login"})
-        }else if (user !== null && isPublic){
-            throw redirect({ to: "/"})
+        } else if (user !== null && isPublic) {
+            throw redirect({to: "/"})
         }
 
-        return { user, queryClient };
+        return {user, queryClient};
     },
     component: RootComp
 })
