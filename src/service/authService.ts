@@ -46,6 +46,7 @@ export const verifyOtp = async (email: string, otp: string) => {
 }
 
 export const handleLogout = () => {
+    window.location.href = "/auth/login";
     localStorage.removeItem("user");
     queryClient.clear();
 }
