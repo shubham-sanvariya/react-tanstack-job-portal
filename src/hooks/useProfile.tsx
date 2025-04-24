@@ -2,7 +2,6 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import {getProfileById, updateProfile} from "../service/profileService.ts";
 import {ProfileType} from "../types/profileType.ts";
 import queryClient from "../service/queryClient.ts";
-import {successNotification} from "../components/notification/notification.tsx";
 import {handleError} from "../service/errorService.ts";
 import useUser from "./useUser.tsx";
 
@@ -30,9 +29,6 @@ const UseProfile = () => {
             queryClient.setQueryData(["userProfile", user?.profileId], updatedProfile);
 
             return {previousProfile}
-        },
-        onSuccess: () => {
-            successNotification("Success", "About Updated Successfully.")
         },
         onError: (error, _, context) => {
             if (context?.previousProfile){
