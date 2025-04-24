@@ -12,10 +12,12 @@ const useUser = () => {
 
     const { data : user, isPending, error } = userState;
 
-    const profileState = useQuery<ProfileType>({
-        queryKey: ["profile", user?.profileId],
-        queryFn: async () => getProfileById(Number(user?.profileId))
-    })
+        const profileState = useQuery<ProfileType>({
+            queryKey: ["userProfile", user?.profileId],
+            queryFn: () => getProfileById(Number(user?.profileId)),
+            enabled: !!user?.profileId
+        })
+
 
     const { data : profile, isPending : isUserProfilePending, error: userProfileError } = profileState;
 
