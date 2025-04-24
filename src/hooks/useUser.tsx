@@ -1,7 +1,8 @@
-import {useQuery} from "@tanstack/react-query";
-import {getUser} from "../service/userService.ts";
-import {getProfileById} from "../service/profileService.ts";
-import {ProfileType} from "../types/profileType.ts";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {getUser, updateUserName} from "../service/userService.ts";
+import queryClient from "../service/queryClient.ts";
+import {UserType} from "../types/profileType.ts";
+import {handleError} from "../service/errorService.ts";
 
 const useUser = () => {
 
@@ -12,15 +13,41 @@ const useUser = () => {
 
     const { data : user, isPending, error } = userState;
 
-        const profileState = useQuery<ProfileType>({
-            queryKey: ["userProfile", user?.profileId],
-            queryFn: () => getProfileById(Number(user?.profileId)),
-            enabled: !!user?.profileId
-        })
+    interface UpdateUserProps {
+        id: number;
+        newUsername: string;
+    }
+
+    const { mutate : updateUserNameMutate } = useMutation({
+        mutationFn: async ({id,newUsername} : UpdateUserProps) => updateUserName(id,newUsername),
+        onMutate: async ({newUsername}) => {
+            await queryClient.cancelQueries({
+                queryKey: ["user"]
+            })
+
+            const previousUser = queryClient.getQueryData<UserType>(["user"]);
+
+            queryClient.setQueryData(["user"], (old : UserType) => ({
+                ...old,
+                name: newUsername
+            }))
+
+            return { previousUser }
+        },
+        onError : (error, _, context) => {
+            if (context?.previousUser){
+                queryClient.setQueryData(["user"],context.previousUser);
+            }
+            handleError(error,"Failed to update User Name")
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["user"]
+            }).then()
+        }
+    })
 
 
-    const { data : profile, isPending : isUserProfilePending, error: userProfileError } = profileState;
-
-    return { user, isPending, error, profile, isUserProfilePending, userProfileError };
+    return { user, isPending, error, updateUserNameMutate };
 }
 export default useUser
