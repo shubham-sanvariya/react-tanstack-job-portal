@@ -13,17 +13,16 @@ import {getAllNotificationByUserId} from "../service/notificationService.ts";
 export const Route = createFileRoute('/')({
   loader: async ({ context }) => {
     const user =  context.user;
-    await context.queryClient.prefetchQuery({
-      queryKey: ["userProfile", user?.profileId],
-      queryFn: () => getProfileById(Number(user?.profileId)),
-      staleTime: Infinity
-    })
 
-    await context.queryClient.prefetchQuery({
-      queryKey: ["notifications", user?.id],
-      queryFn: () => getAllNotificationByUserId(Number(user?.id)),
-      staleTime: Infinity
-    })
+      await context.queryClient.prefetchQuery({
+        queryKey: ["userProfile", user?.profileId],
+        queryFn: () => getProfileById(Number(user?.profileId)),
+      })
+
+      await context.queryClient.prefetchQuery({
+        queryKey: ["notifications", user?.id],
+        queryFn: () => getAllNotificationByUserId(Number(user?.id)),
+      })
   },
   component: RouteComponent,
 })
