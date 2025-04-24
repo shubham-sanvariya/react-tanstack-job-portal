@@ -4,12 +4,12 @@ import { IconBriefcase, IconCheck, IconMapPin, IconPencil, IconX } from "@tabler
 import { useMemo, useState } from "react";
 import { hasLength, useForm } from "@mantine/form";
 import {useMediaQuery} from "@mantine/hooks";
-import {successNotification} from "../notification/notification.tsx";
 import useProfile from "../../hooks/useProfile.tsx";
 import { ProfileType } from "../../types/profileType.ts";
 import useUser from "../../hooks/useUser.tsx";
 import SelectInput from "./selectInput.tsx";
 import { fields } from "../../Data/PostJob.tsx";
+import {successNotification} from "../notification/notification.tsx";
 
 const Info = () => {
     const [edit, setEdit] = useState<boolean>(false);
@@ -38,8 +38,8 @@ const Info = () => {
                 updateUserNameMutate({id : userState.id ,newUsername : updatedProfile.name})
             }
             updateProfileMutate(updatedProfile as ProfileType);
-            successNotification("Success", "Profile Updated Successfully.")
             setEdit(false);
+            successNotification("Success", "Profile Info Updated Successfully.")
         }
     }
 

@@ -28,7 +28,7 @@ const About = () => {
         const updatedProfile = {...profileState, about};
         updateProfileMutate(updatedProfile as ProfileType);
 
-        successNotification("Success", "About Updated Successfully.")
+        successNotification("Success", "Profile About Updated Successfully.")
     }
 
     return (
