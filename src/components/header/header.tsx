@@ -26,7 +26,7 @@ const Header = () => {
             <NavLinks />
             <div className={'flex gap-3 items-center'}>
                 {user ? <ProfileMenu /> : <Link to={'/auth/login'}>
-                    <Button variant={'subtle'} color={'bright-sun.4'}>
+                    <Button variant={'subtle'} color={'bright-sun.4'} onClick={() => navigate({ to: "/auth/login"})}>
                         Login / Signup
                     </Button>
                 </Link>}
