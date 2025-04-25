@@ -56,7 +56,7 @@ const SelectInput = (props: any) => {
                     {...props.form.getInputProps(props.name)}
                     withAsterisk
                     label={props.label}
-                    leftSection={<props.leftSection stroke={1.5} />}
+                    leftSection={props.leftSection ? <props.leftSection stroke={1.5} /> : null}
                     rightSection={<Combobox.Chevron/>}
                     value={search}
                     onChange={(event) => {
