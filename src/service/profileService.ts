@@ -23,3 +23,18 @@ export const updateProfile = async (profile : ProfileType) => {
         throw err;
     }
 }
+
+export const getAllProfiles = async (page = 0, size = 5, sort? :string) => {
+    try {
+        let params : Record<string, number | string> = { page, size };
+
+        if (sort !== undefined){
+            params = {...params,sort}
+        }
+        const res = await api.get(base_URL, { params });
+        return res.data;
+    }catch (err : unknown){
+        handleError(err,"Failed to fetch Talents");
+        throw err;
+    }
+}
