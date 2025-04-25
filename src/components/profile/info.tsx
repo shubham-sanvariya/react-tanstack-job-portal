@@ -1,7 +1,7 @@
 import {ActionIcon, NumberInput} from "@mantine/core";
 import { IconBriefcase, IconCheck, IconMapPin, IconPencil, IconX } from "@tabler/icons-react";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { hasLength, useForm } from "@mantine/form";
 import {useMediaQuery} from "@mantine/hooks";
 import useProfile from "../../hooks/useProfile.tsx";
@@ -56,7 +56,7 @@ const Info = () => {
         validateInputOnChange: true
     })
 
-    const isFormValid = useMemo(() => !form.validate().hasErrors, [form]);
+    const isFormValid = form.isValid();
 
 
     return (
