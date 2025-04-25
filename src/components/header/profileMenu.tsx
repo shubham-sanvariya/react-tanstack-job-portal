@@ -4,15 +4,15 @@ import {
 } from '@tabler/icons-react';
 import {useState} from "react";
 import {Link} from "@tanstack/react-router";
-import useUser from "../../hooks/useUser.tsx";
 import {handleLogout} from "../../service/authService.ts";
+import useProfile from "../../hooks/useProfile.tsx";
 
 
 const ProfileMenu = () => {
 
     const [checked, setChecked] = useState(false);
     const [opened, setOpened] = useState(false);
-    const { profile } = useUser();
+    const { profile } = useProfile();
 
 
     return (
